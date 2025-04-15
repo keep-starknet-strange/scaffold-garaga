@@ -64,20 +64,25 @@ gen-vk:
 gen-verifier:
 	cd contracts && garaga gen --system ultra_keccak_zk_honk --vk ../circuit/target/vk --project-name verifier
 
-build-verifier:
-	cd contracts/verifier && scarb build
+build-contracts:
+	cd contracts && scarb build
 
 declare-verifier:
-	cd contracts && sncast declare --contract-name UltraKeccakZKHonkVerifier
+	cd contracts && sncast declare --package verifier --contract-name UltraKeccakZKHonkVerifier
 
-deploy-verifier:
-	# TODO: use class hash from the result of the `make declare-verifier` step
-	cd contracts && sncast deploy --salt 0x01 --class-hash 0x1388bea7839123f19c09eb83b06c4874fbfaebb61f709a3f6ce04520e55d29e
+declare-main:
+	# TODO: don't forget to update the class hash in the main code (VERIFIER_CLASSHASH) from the result of the `make declare-verifier` step
+	cd contracts && sncast declare --package main --contract-name MainContract
+
+deploy-main:
+	# TODO: use class hash from the result of the `make declare-main` step
+	# NOTE: the public key is corresponding to the private key `1`
+	cd contracts && sncast deploy --salt 0x02 --class-hash 0x6c07fb3260611d93220f6d9ff1169fee85db0a22a1e5180cbf15e85268f6511 --arguments 217234377348884654691879377518794323857294947151490278790710809376325639809
 
 artifacts:
 	cp ./circuit/target/circuit.json ./app/src/assets/circuit.json
 	cp ./circuit/target/vk ./app/src/assets/vk.bin
-	cp ./contracts/target/release/verifier_UltraKeccakZKHonkVerifier.contract_class.json ./app/src/assets/verifier.json
+	cp ./contracts/target/release/main_MainContract.contract_class.json ./app/src/assets/main.json
 
 run-app:
 	cd app && bun run dev

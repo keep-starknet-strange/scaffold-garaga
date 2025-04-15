@@ -7,9 +7,9 @@ import { UltraHonkBackend } from "@aztec/bb.js";
 import { flattenFieldsAsArray } from "./helpers/proof";
 import { getZKHonkCallData, init, poseidonHashBN254 } from 'garaga';
 import { bytecode, abi } from "./assets/circuit.json";
-import { abi as verifierAbi } from "./assets/verifier.json";
+import { abi as mainAbi } from "./assets/main.json";
 import vkUrl from './assets/vk.bin?url';
-import { RpcProvider, Contract } from 'starknet';
+import { RpcProvider, Contract, Account } from 'starknet';
 import initNoirC from "@noir-lang/noirc_abi";
 import initACVM from "@noir-lang/acvm_js";
 import acvm from "@noir-lang/acvm_js/web/acvm_js_bg.wasm?url";
@@ -130,16 +130,23 @@ function App() {
       // Connect wallet
       updateState(ProofState.ConnectingWallet);
 
+      const provider = new RpcProvider({ nodeUrl: 'http://127.0.0.1:5050/rpc' });
+
+      // initialize existing pre-deployed account 0 of Devnet
+      const privateKey = '0x71d7bb07b9a64f6f78ac4c816aff4da9';
+      const accountAddress = '0x64b48806902a367c8598f4f95c305e8c1a1acba5f082d294a43793113115691';
+      const account = new Account({ provider, address: accountAddress, signer: privateKey });
+
       // Send transaction
       updateState(ProofState.SendingTransaction);
 
-      const provider = new RpcProvider({ nodeUrl: 'http://127.0.0.1:5050/rpc' });
-      // TODO: use conract address from the result of the `make deploy-verifier` step
-      const contractAddress = '0x01b1a61046c5764aa77bedb45acb24d68b7e2ce3289d40d0a719b04b4f8392f5';
-      const verifierContract = new Contract({ abi: verifierAbi, address: contractAddress, providerOrAccount: provider });
+      // TODO: use contract address from the result of the `make deploy-main` step
+      const contractAddress = '0x05db3adc11a137c975dc93cb3939ed5089c9cc933ef32935d4496ebfa9a859fe';
+      const mainContract = new Contract({ abi: mainAbi, address: contractAddress, providerOrAccount: account });
       
       // Check verification
-      const res = await verifierContract.verify_ultra_keccak_zk_honk_proof(callData.slice(1));
+      const res = await mainContract.add_solution(callData); // keep the number of elements to pass to the verifier library call
+      await provider.waitForTransaction(res.transaction_hash);
       console.log(res);
 
       updateState(ProofState.ProofVerified);
