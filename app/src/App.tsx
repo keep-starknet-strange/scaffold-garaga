@@ -9,7 +9,8 @@ import { getZKHonkCallData, init, poseidonHashBN254 } from 'garaga';
 import { bytecode, abi } from "./assets/circuit.json";
 import { abi as mainAbi } from "./assets/main.json";
 import vkUrl from './assets/vk.bin?url';
-import { RpcProvider, Contract, Account } from 'starknet';
+import { RpcProvider, Contract, WalletAccount } from 'starknet';
+import { connect } from "@starknet-io/get-starknet"
 import initNoirC from "@noir-lang/noirc_abi";
 import initACVM from "@noir-lang/acvm_js";
 import acvm from "@noir-lang/acvm_js/web/acvm_js_bg.wasm?url";
@@ -130,20 +131,24 @@ function App() {
       // Connect wallet
       updateState(ProofState.ConnectingWallet);
 
-      const provider = new RpcProvider({ nodeUrl: 'http://127.0.0.1:5050/rpc' });
+      const provider = new RpcProvider({ nodeUrl: 'https://api.zan.top/public/starknet-sepolia/rpc/v0_10' })
 
-      // initialize existing pre-deployed account 0 of Devnet
-      const privateKey = '0x71d7bb07b9a64f6f78ac4c816aff4da9';
-      const accountAddress = '0x64b48806902a367c8598f4f95c305e8c1a1acba5f082d294a43793113115691';
-      const account = new Account({ provider, address: accountAddress, signer: privateKey });
-
+      const selectedWalletSWO = await connect();
+      if (!selectedWalletSWO) {
+        throw new Error('No wallet connected');
+      }
+      const myWalletAccount = await WalletAccount.connect(
+        provider,
+        selectedWalletSWO
+      );
+      console.log(myWalletAccount);
       // Send transaction
       updateState(ProofState.SendingTransaction);
 
       // TODO: use contract address from the result of the `make deploy-main` step
-      const contractAddress = '0x05db3adc11a137c975dc93cb3939ed5089c9cc933ef32935d4496ebfa9a859fe';
-      const mainContract = new Contract({ abi: mainAbi, address: contractAddress, providerOrAccount: account });
-      
+      const contractAddress = '0x02e26aedf1f484c67f825061fc8a62167c6f03166a593f2db42104a4f88a6604';
+      const mainContract = new Contract({ abi: mainAbi, address: contractAddress, providerOrAccount: myWalletAccount });
+
       // Check verification
       const res = await mainContract.add_solution(callData); // keep the number of elements to pass to the verifier library call
       await provider.waitForTransaction(res.transaction_hash);

@@ -77,7 +77,7 @@ declare-main:
 deploy-main:
 	# TODO: use class hash from the result of the `make declare-main` step
 	# NOTE: the public key is corresponding to the private key `1`
-	cd contracts && sncast deploy --salt 0x02 --class-hash 0x6c07fb3260611d93220f6d9ff1169fee85db0a22a1e5180cbf15e85268f6511 --arguments 217234377348884654691879377518794323857294947151490278790710809376325639809
+	cd contracts && sncast deploy --salt 0x03 --class-hash 0x6c07fb3260611d93220f6d9ff1169fee85db0a22a1e5180cbf15e85268f6511 --arguments 217234377348884654691879377518794323857294947151490278790710809376325639809
 
 artifacts:
 	cp ./circuit/target/circuit.json ./app/src/assets/circuit.json
