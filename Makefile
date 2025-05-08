@@ -14,7 +14,7 @@ install-starknet:
 
 install-devnet:
 	asdf plugin add starknet-devnet
-	asdf install starknet-devnet 0.3.0
+	asdf install starknet-devnet 0.4.1
 
 install-garaga:
 	pip install garaga==0.18.0
@@ -51,7 +51,7 @@ declare-verifier:
 
 deploy-verifier:
 	# TODO: use class hash from the result of the `make declare-verifier` step
-	cd contracts && sncast deploy --class-hash 0x01a96a2599bc5239d5cecf9406d37dbf1ee8bf00b0ee5f3dddefdb8ea48e95ba
+	cd contracts && sncast deploy --salt 0x00 --class-hash 0x01a96a2599bc5239d5cecf9406d37dbf1ee8bf00b0ee5f3dddefdb8ea48e95ba
 
 artifacts:
 	cp ./circuit/target/circuit.json ./app/src/assets/circuit.json
