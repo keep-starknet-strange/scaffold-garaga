@@ -129,7 +129,7 @@ function App() {
 
       const provider = new RpcProvider({ nodeUrl: 'http://127.0.0.1:5050/rpc' });
       // TODO: use conract address from the result of the `make deploy-verifier` step
-      const contractAddress = '0x0571403cd12c79c3563eddff3f50cdf4ae10f8f31dc4756545a1812171da53a0';
+      const contractAddress = '0x0430e23a324017a91b346d75b2d8d9c088a282adbf1783b2f28533d312bbd91d';
       const verifierContract = new Contract(verifierAbi, contractAddress, provider);
       
       // Check verification

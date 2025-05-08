@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024_07"
 
 [dependencies]
-garaga = { git = "https://github.com/keep-starknet-strange/garaga.git", tag = "v0.17.0" }
+garaga = { git = "https://github.com/keep-starknet-strange/garaga.git", tag = "v0.18.0" }
 starknet = "2.11.4"
 
 [cairo]

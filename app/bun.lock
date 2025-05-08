@@ -7,7 +7,7 @@
         "@aztec/bb.js": "=0.85.0",
         "@noir-lang/noir_js": "=1.0.0-beta.3",
         "@starknet-io/get-starknet": "^4.0.7",
-        "garaga": "=0.17.0",
+        "garaga": "=0.18.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "starknet": "^7.1.0",
@@ -376,7 +376,7 @@
 
     "fsevents": ["fsevents@2.3.3", "", { "os": "darwin" }, "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="],
 
-    "garaga": ["garaga@0.17.0", "", {}, "sha512-mJ42o08Z9rX+ly354qNHXDvdtcwG5JqJzWT8kLbWhfJgCcOqoE2wO47HeVO1bMyKLC8P8VUcP7Lbzxc+gUYNpg=="],
+    "garaga": ["garaga@0.18.0", "", {}, "sha512-LUhLp5GCvUgbtGx+81/o6sL14Be6HaNfQBihlAfms72q2bhdpUM3mVxZ7tvHXIhoGCX9L7krnSwh1wwEPp7fqw=="],
 
     "gensync": ["gensync@1.0.0-beta.2", "", {}, "sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg=="],
 

@@ -3,8 +3,8 @@ version = 1
 
 [[package]]
 name = "garaga"
-version = "0.17.0"
-source = "git+https://github.com/keep-starknet-strange/garaga.git?tag=v0.17.0#ee2ffcaf4f9ec6e1108db934516182d8d2362646"
+version = "0.18.0"
+source = "git+https://github.com/keep-starknet-strange/garaga.git?tag=v0.18.0#1582fded827165532bebccc8a4b312058e5b34ca"
 
 [[package]]
 name = "verifier"
