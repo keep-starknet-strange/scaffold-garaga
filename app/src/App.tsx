@@ -105,7 +105,7 @@ function App() {
       updateState(ProofState.GeneratingProof);
 
       let honk = new UltraHonkBackend(bytecode, { threads: 2 });
-      let proof = await honk.generateProof(execResult.witness, { keccak: true });
+      let proof = await honk.generateProof(execResult.witness, { starknet: true });
       honk.destroy();
       console.log(proof);
       
@@ -117,7 +117,7 @@ function App() {
         proof.proof,
         flattenFieldsAsArray(proof.publicInputs),
         vk as Uint8Array,
-        0 // HonkFlavor.KECCAK
+        1 // HonkFlavor.STARKNET
       );
       console.log(callData);
       
@@ -129,11 +129,11 @@ function App() {
 
       const provider = new RpcProvider({ nodeUrl: 'http://127.0.0.1:5050/rpc' });
       // TODO: use conract address from the result of the `make deploy-verifier` step
-      const contractAddress = '0x0271da45750fddf2fd3708370d7c361b059e82f5ffe00cd548789973acb58df7';
+      const contractAddress = '0x02b76ac09aea8957666f0fb3409b091e2bdca99700273af44358bd2ed0e14a32';
       const verifierContract = new Contract(verifierAbi, contractAddress, provider);
       
       // Check verification
-      const res = await verifierContract.verify_ultra_keccak_honk_proof(callData.slice(1));
+      const res = await verifierContract.verify_ultra_starknet_honk_proof(callData.slice(1));
       console.log(res);
 
       updateState(ProofState.ProofVerified);

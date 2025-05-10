@@ -5,14 +5,14 @@ use super::honk_verifier_circuits::{
 use super::honk_verifier_constants::{VK_HASH, precomputed_lines, vk};
 
 #[starknet::interface]
-pub trait IUltraKeccakHonkVerifier<TContractState> {
-    fn verify_ultra_keccak_honk_proof(
+pub trait IUltraStarknetHonkVerifier<TContractState> {
+    fn verify_ultra_starknet_honk_proof(
         self: @TContractState, full_proof_with_hints: Span<felt252>,
     ) -> Option<Span<u256>>;
 }
 
 #[starknet::contract]
-mod UltraKeccakHonkVerifier {
+mod UltraStarknetHonkVerifier {
     use core::num::traits::Zero;
     use core::poseidon::hades_permutation;
     use garaga::circuits::ec;
@@ -24,8 +24,8 @@ mod UltraKeccakHonkVerifier {
     use garaga::ec_ops::{G1PointTrait, GlvFakeGlvHint, _ec_safe_add, _scalar_mul_glv_and_fake_glv};
     use garaga::pairing_check::{MPCheckHintBN254, multi_pairing_check_bn254_2P_2F};
     use garaga::utils::noir::honk_transcript::{
-        BATCHED_RELATION_PARTIAL_LENGTH, HonkTranscriptTrait, KeccakHasherState,
-        Point256IntoCircuitPoint,
+        BATCHED_RELATION_PARTIAL_LENGTH, HonkTranscriptTrait, Point256IntoCircuitPoint,
+        StarknetHasherState,
     };
     use garaga::utils::noir::{G2_POINT_KZG_1, G2_POINT_KZG_2, HonkProof};
     use super::{
@@ -45,8 +45,8 @@ mod UltraKeccakHonkVerifier {
     }
 
     #[abi(embed_v0)]
-    impl IUltraKeccakHonkVerifier of super::IUltraKeccakHonkVerifier<ContractState> {
-        fn verify_ultra_keccak_honk_proof(
+    impl IUltraStarknetHonkVerifier of super::IUltraStarknetHonkVerifier<ContractState> {
+        fn verify_ultra_starknet_honk_proof(
             self: @ContractState, full_proof_with_hints: Span<felt252>,
         ) -> Option<Span<u256>> {
             // DO NOT EDIT THIS FUNCTION UNLESS YOU KNOW WHAT YOU ARE DOING.
@@ -61,7 +61,7 @@ mod UltraKeccakHonkVerifier {
             let mod_grumpkin = get_GRUMPKIN_modulus();
 
             let (transcript, transcript_state, base_rlc) = HonkTranscriptTrait::from_proof::<
-                KeccakHasherState,
+                StarknetHasherState,
             >(vk.circuit_size, vk.public_inputs_size, vk.public_inputs_offset, full_proof.proof);
             let log_n = vk.log_circuit_size;
             let (sum_check_rlc, honk_check) = run_GRUMPKIN_HONK_SUMCHECK_SIZE_12_PUB_17_circuit(
