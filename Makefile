@@ -7,7 +7,7 @@ install-noir:
 
 install-barretenberg:
 	curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/refs/heads/master/barretenberg/bbup/install | bash
-	bbup --version 0.85.0
+	bbup --version 0.86.0-starknet.1
 
 install-starknet:
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.starkup.dev | sh
