@@ -10,14 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@aztec/bb.js": "=0.86.0-starknet.1",
-    "@noir-lang/noir_js": "=1.0.0-beta.3",
+    "@aztec/bb.js": "=3.0.0-nightly.20251104",
+    "@noir-lang/noir_js": "=1.0.0-beta.16",
     "@starknet-io/get-starknet": "^4.0.7",
-    "garaga": "=0.18.0",
+    "garaga": "=1.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "starknet": "^7.1.0",
-    "vite-plugin-serve-static": "^1.1.0"
+    "starknet": "=8.7.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -27,6 +26,7 @@
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
+    "vite-plugin-node-polyfills": "^0.22.0",
     "globals": "^15.15.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",

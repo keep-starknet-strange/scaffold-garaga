@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import { ProofState, ProofStateData } from './types'
 import { Noir } from "@noir-lang/noir_js";
+import { DebugFileMap } from "@noir-lang/types";
 import { UltraHonkBackend } from "@aztec/bb.js";
 import { flattenFieldsAsArray } from "./helpers/proof";
-import { getHonkCallData, init } from 'garaga';
+import { getZKHonkCallData, init } from 'garaga';
 import { bytecode, abi } from "./assets/circuit.json";
 import { abi as verifierAbi } from "./assets/verifier.json";
 import vkUrl from './assets/vk.bin?url';
@@ -97,7 +98,7 @@ function App() {
       const input = { x: inputX, y: inputY };
       
       // Generate witness
-      let noir = new Noir({ bytecode, abi: abi as any });
+      let noir = new Noir({ bytecode, abi: abi as any, debug_symbols: '', file_map: {} as DebugFileMap });
       let execResult = await noir.execute(input);
       console.log(execResult);
       
@@ -105,7 +106,7 @@ function App() {
       updateState(ProofState.GeneratingProof);
 
       let honk = new UltraHonkBackend(bytecode, { threads: 2 });
-      let proof = await honk.generateProof(execResult.witness, { starknet: true });
+      let proof = await honk.generateProof(execResult.witness, { keccakZK: true });
       honk.destroy();
       console.log(proof);
       
@@ -113,11 +114,10 @@ function App() {
       updateState(ProofState.PreparingCalldata);
 
       await init();
-      const callData = getHonkCallData(
+      const callData = getZKHonkCallData(
         proof.proof,
         flattenFieldsAsArray(proof.publicInputs),
         vk as Uint8Array,
-        1 // HonkFlavor.STARKNET
       );
       console.log(callData);
       
@@ -129,11 +129,11 @@ function App() {
 
       const provider = new RpcProvider({ nodeUrl: 'http://127.0.0.1:5050/rpc' });
       // TODO: use conract address from the result of the `make deploy-verifier` step
-      const contractAddress = '0x02b76ac09aea8957666f0fb3409b091e2bdca99700273af44358bd2ed0e14a32';
-      const verifierContract = new Contract(verifierAbi, contractAddress, provider);
+      const contractAddress = '0x010c28f1c7be53f0dd8ff8e9646b3c0d5232f0a32971809bf6ebe115921c305b';
+      const verifierContract = new Contract({ abi: verifierAbi, address: contractAddress, providerOrAccount: provider });
       
       // Check verification
-      const res = await verifierContract.verify_ultra_starknet_honk_proof(callData.slice(1));
+      const res = await verifierContract.verify_ultra_keccak_zk_honk_proof(callData.slice(1));
       console.log(res);
 
       updateState(ProofState.ProofVerified);
