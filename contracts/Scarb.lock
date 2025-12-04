@@ -2,13 +2,37 @@
 version = 1
 
 [[package]]
+name = "corelib_imports"
+version = "0.1.2"
+source = "git+https://github.com/keep-starknet-strange/garaga.git?tag=v1.0.1#aa91b6504c86995789edb4e78f9f9ba20571625c"
+
+[[package]]
 name = "garaga"
-version = "0.18.0"
-source = "git+https://github.com/keep-starknet-strange/garaga.git?tag=v0.18.0#1582fded827165532bebccc8a4b312058e5b34ca"
+version = "1.0.1"
+source = "git+https://github.com/keep-starknet-strange/garaga.git?tag=v1.0.1#aa91b6504c86995789edb4e78f9f9ba20571625c"
+dependencies = [
+ "corelib_imports",
+]
+
+[[package]]
+name = "snforge_scarb_plugin"
+version = "0.53.0"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:10444a0211c5cf460aba730703a48ed72876f68b283e3741059fc2552ce226db"
+
+[[package]]
+name = "snforge_std"
+version = "0.53.0"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:85dd728289a4903e0e6f87f9ab9d27350b883e781b238bb117e7ee995e257ee2"
+dependencies = [
+ "snforge_scarb_plugin",
+]
 
 [[package]]
 name = "verifier"
 version = "0.1.0"
 dependencies = [
  "garaga",
+ "snforge_std",
 ]
