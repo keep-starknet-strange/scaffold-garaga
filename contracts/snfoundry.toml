@@ -1,5 +1,9 @@
-[sncast.default]
+[sncast.devnet]
 url = "http://localhost:5050/rpc"
 accounts-file = "accounts.json"
 account = "devnet0"
 show-explorer-links = false
+
+[sncast.default]
+network = "sepolia"
+account = "test"
