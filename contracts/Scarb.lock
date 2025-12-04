@@ -15,6 +15,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "main"
+version = "0.1.0"
+
+[[package]]
 name = "snforge_scarb_plugin"
 version = "0.53.0"
 source = "registry+https://scarbs.xyz/"
